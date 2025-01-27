@@ -1,0 +1,188 @@
+{
+	"compiler": {
+		"version": "0.8.26+commit.8a97fa7a"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_pieceRegistryAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_certificationAddress",
+						"type": "address"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "certificationAddress",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint32",
+						"name": "_pieceId",
+						"type": "uint32"
+					},
+					{
+						"internalType": "uint64",
+						"name": "_certificationDate",
+						"type": "uint64"
+					}
+				],
+				"name": "certifyPiece",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint32",
+						"name": "_pieceId",
+						"type": "uint32"
+					}
+				],
+				"name": "getPieceInfo",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "name",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "address",
+						"name": "manufacturer",
+						"type": "address"
+					},
+					{
+						"internalType": "uint64",
+						"name": "certificationDate",
+						"type": "uint64"
+					},
+					{
+						"internalType": "address",
+						"name": "certifiedBy",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "pieceRegistryAddress",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "_name",
+						"type": "bytes32"
+					}
+				],
+				"name": "registerPiece",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"details": "Ce contrat fait office d'intermédiaire entre le registre de pièces et le contrat de certification.",
+			"kind": "dev",
+			"methods": {
+				"certifyPiece(uint32,uint64)": {
+					"details": "Certifie une pièce en appelant Certification.",
+					"params": {
+						"_certificationDate": "Timestamp de certification.",
+						"_pieceId": "ID de la pièce."
+					}
+				},
+				"getPieceInfo(uint32)": {
+					"details": "Récupère toutes les informations (nom, manufacturer, date, certifier) pour une pièce donnée."
+				},
+				"registerPiece(bytes32)": {
+					"details": "Enregistre une nouvelle pièce en appelant PieceRegistry.",
+					"params": {
+						"_name": "Nom de la pièce (bytes32)."
+					}
+				}
+			},
+			"title": "Proxy",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/Proxy.sol": "Proxy"
+		},
+		"evmVersion": "cancun",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": false,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/Certification.sol": {
+			"keccak256": "0xfed076d82b230fbd5ba35373e104957809c21e73f27d2f2426031604248dfac1",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://484e4e62bfd7f3d8c3d1242aa3aff66d1d61a2a08936d21a256c17d60a58370e",
+				"dweb:/ipfs/QmZZ6SkczDhajpHMZxBUYBJtzD32VjN8U1q14dL3Yj9nwy"
+			]
+		},
+		"contracts/PieceRegistry.sol": {
+			"keccak256": "0x99f4343d2e399a61d822d407a8f534704648d385d1052925e0dfc5284b64f6f4",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://50a16fc080de67e7d6ed19f82db4fdf6e606a565742445462f1e25a13eef495c",
+				"dweb:/ipfs/QmSrjpYS2HWbxnMLwwaTh6y3Z3mNpLTUAwmRCXV1WX1VPS"
+			]
+		},
+		"contracts/Proxy.sol": {
+			"keccak256": "0xcf42be2cdf7270372abf4ede1dafa461fc07a6dbba46bfeefa56d4387d874490",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f267011f6c6f7c671beecdd16bebf8367ad1335e952bbb4fb3437e9591300752",
+				"dweb:/ipfs/QmdYz8t5Gs6kQcgfpDkr5AAGoAjWfT2fXjsWd7zTD2mSz4"
+			]
+		}
+	},
+	"version": 1
+}

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interface de Certification</title>
+</head>
+<body>
+    <h1>Certification des Pièces</h1>
+
+    <div>
+        <h2>Enregistrer une pièce</h2>
+        <input type="text" id="pieceName" placeholder="Nom de la pièce">
+        <button onclick="registerPiece()">Enregistrer</button>
+    </div>
+
+    <div>
+        <h2>Certifier une pièce</h2>
+        <input type="number" id="pieceIdCertify" placeholder="ID de la pièce">
+        <input type="number" id="certificationDate" placeholder="Date (timestamp)">
+        <button onclick="certifyPiece()">Certifier</button>
+    </div>
+
+    <div>
+        <h2>Obtenir les informations d'une pièce</h2>
+        <input type="number" id="pieceIdInfo" placeholder="ID de la pièce">
+        <button onclick="getPieceInfo()">Obtenir les infos</button>
+    </div>
+
+    <div id="output"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.7.0/dist/web3.min.js"></script>
+    <script>
+        let web3;
+        let proxyContract;
+
+        // Adresse du contrat Proxy (remplacez par l'adresse déployée)
+        const proxyAddress = "0x..."; 
+        const proxyAbi = [
+            // ABI des fonctions du contrat Proxy
+            {
+                "inputs": [{"internalType": "bytes32","name": "_name","type": "bytes32"}],
+                "name": "registerPiece",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [{"internalType": "uint32","name": "_pieceId","type": "uint32"},{"internalType": "uint64","name": "_certificationDate","type": "uint64"}],
+                "name": "certifyPiece",
+                "outputs": [],
+                "stateMutability": "nonpayable",
+                "type": "function"
+            },
+            {
+                "inputs": [{"internalType": "uint32","name": "_pieceId","type": "uint32"}],
+                "name": "getPieceInfo",
+                "outputs": [
+                    {"internalType": "bytes32","name":"","type":"bytes32"},
+                    {"internalType": "address","name":"","type":"address"},
+                    {"internalType": "uint64","name":"","type":"uint64"},
+                    {"internalType": "address","name":"","type":"address"}
+                ],
+                "stateMutability": "view",
+                "type": "function"
+            }
+        ];
+
+        // Initialiser Web3 et le contrat
+        window.onload = async () => {
+            if (window.ethereum) {
+                web3 = new Web3(window.ethereum);
+                await ethereum.request({ method: 'eth_requestAccounts' });
+                proxyContract = new web3.eth.Contract(proxyAbi, proxyAddress);
+            } else {
+                alert("Veuillez installer MetaMask pour interagir avec l'application !");
+            }
+        };
+
+        // Fonction pour enregistrer une pièce
+        async function registerPiece() {
+            const name = document.getElementById("pieceName").value;
+            const nameBytes32 = web3.utils.asciiToHex(name);
+            const accounts = await web3.eth.getAccounts();
+            await proxyContract.methods.registerPiece(nameBytes32).send({ from: accounts[0] });
+            document.getElementById("output").innerText = `Pièce "${name}" enregistrée avec succès.`;
+        }
+
+        // Fonction pour certifier une pièce
+        async function certifyPiece() {
+            const pieceId = document.getElementById("pieceIdCertify").value;
+            const certificationDate = document.getElementById("certificationDate").value;
+            const accounts = await web3.eth.getAccounts();
+            await proxyContract.methods.certifyPiece(pieceId, certificationDate).send({ from: accounts[0] });
+            document.getElementById("output").innerText = `Pièce ${pieceId} certifiée avec succès.`;
+        }
+
+        // Fonction pour obtenir les informations d'une pièce
+        async function getPieceInfo() {
+            const pieceId = document.getElementById("pieceIdInfo").value;
+            const info = await proxyContract.methods.getPieceInfo(pieceId).call();
+            const name = web3.utils.hexToAscii(info[0]).replace(/\0/g, '');
+            document.getElementById("output").innerText = `ID : ${pieceId}\nNom : ${name}\nFabricant : ${info[1]}\nDate de Certification : ${info[2]}\nCertifié par : ${info[3]}`;
+        }
+    </script>
+</body>
+</html>
